@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guia Completo de Ferramentas do CorelDRAW</title>
+  <style>
+    :root{
+      --bg: #0b0f14; --card: #111826; --muted: #93a4b8; --text: #e8edf3;
+      --accent: #a78bfa; --chip:#1b2433; --border:#243247; --shadow:0 10px 25px rgba(0,0,0,.28)
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:linear-gradient(180deg,#09111a,#0b0f14 30%);color:var(--text)}
+    header{position:sticky;top:0;background:rgba(11,15,20,.7);backdrop-filter:blur(8px);z-index:10;border-bottom:1px solid var(--border)}
+    .wrap{max-width:1100px;margin:0 auto;padding:20px}
+    h1{margin:6px 0 8px;font-size:clamp(24px,3.5vw,38px);letter-spacing:.2px}
+    p.lead{margin:0 0 14px;color:var(--muted)}
+    .search-bar{display:flex;gap:10px;align-items:center}
+    .search-bar input{width:100%;padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:var(--card);color:var(--text);box-shadow:var(--shadow)}
+    .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .tag{font-size:12px;padding:8px 10px;border-radius:999px;background:var(--chip);border:1px solid var(--border);cursor:pointer;user-select:none}
+    .tag.active{outline:2px solid var(--accent)}
+    main{max-width:1100px;margin:24px auto;padding:0 20px 80px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px 14px 10px;box-shadow:var(--shadow)}
+    .cat{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+    .cat .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+    .card h2{font-size:14px;margin:0;color:#e8ddff;text-transform:uppercase;letter-spacing:.12em}
+    .item{border-top:1px dashed var(--border);padding:12px 6px 10px}
+    .k{display:inline-grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center}
+    kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px;padding:4px 8px;border-radius:10px;background:linear-gradient(180deg,#0f1724,#0c1320);border:1px solid var(--border);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+    .desc{color:var(--muted);font-size:14px;line-height:1.45}
+    .sub{font-size:12px;color:#a9bacf}
+    .hidden{display:none !important}
+    .footer{max-width:1100px;margin:0 auto;padding:24px 20px 60px;color:var(--muted);border-top:1px solid var(--border)}
+    .pill{display:inline-block;margin-right:8px;margin-top:8px;padding:6px 10px;border-radius:999px;background:var(--chip);border:1px solid var(--border);font-size:12px}
+    a{color:var(--accent);text-decoration:none}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Guia Completo de Ferramentas do CorelDRAW</h1>
+      <p class="lead">Pesquise ou filtre por categoria. Os nomes podem variar entre versões, mas as funções permanecem semelhantes.</p>
+      <div class="search-bar">
+        <input id="q" placeholder="Pesquisar (ex.: Caneta Bézier, Mistura, Malha)…" aria-label="Pesquisar ferramenta" />
+      </div>
+      <div class="tags" id="tags">
+        <span class="tag active" data-cat="all">Todas</span>
+        <span class="tag" data-cat="sele">Seleção & Visualização</span>
+        <span class="tag" data-cat="linhas">Desenho de Linhas</span>
+        <span class="tag" data-cat="formas">Formas Geométricas</span>
+        <span class="tag" data-cat="intelig">Formas Inteligentes</span>
+        <span class="tag" data-cat="texto">Texto & Tabelas</span>
+        <span class="tag" data-cat="edicao">Edição & Corte</span>
+        <span class="tag" data-cat="inter">Interativas (Efeitos)</span>
+        <span class="tag" data-cat="preen">Preenchimento & Contorno</span>
+        <span class="tag" data-cat="cor">Cor & Amostragem</span>
+        <span class="tag" data-cat="trans">Transparência & Malha</span>
+        <span class="tag" data-cat="med">Medidas & Conectores</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <section class="footer">
+    <h3 style="margin:0 0 8px;font-size:18px;color:#e8ddff">Observações</h3>
+    <p>• Este guia foca o <strong>CorelDRAW</strong> (vetor). Algumas ferramentas existem apenas em certas versões/edições. <br>
+       • Nomes equivalentes em inglês são listados como sinônimos para facilitar a busca. <br>
+       • Em laptops/edições Essentials, alguns grupos podem estar recolhidos no <em>flyout</em> da caixa de ferramentas.
+    </p>
+    <div>
+      <span class="pill">CorelDRAW (vetor)</span>
+      <span class="pill">Funções podem variar por versão</span>
+      <span class="pill">Atalhos configuráveis</span>
+    </div>
+  </section>
+
+  <script>
+    // -------- Dados das ferramentas --------
+    const tools = [
+      // Seleção & Visualização
+      {k:'Ferramenta Seleção (Pick)', cat:'sele', alt:['Pick Tool','Selecionar','Ferramenta de Seleção'], d:'Seleciona, move, escala, gira e inclina objetos. Duplo clique alterna modos de transformação.'},
+      {k:'Seleção Livre (Freehand Pick)', cat:'sele', alt:['Freehand Pick Tool'], d:'Seleciona objetos por laço irregular, útil para áreas densas.'},
+      {k:'Forma (Shape)', cat:'sele', alt:['Shape Tool','Nós','Editar Nós'], d:'Edita nós e alças de curvas, cantos de retângulos e outros parâmetros de formas.'},
+      {k:'Zoom', cat:'sele', alt:['Zoom Tool'], d:'Amplia ou reduz a visualização. Clique com botão direito costuma reduzir (depende de preferências).'},
+      {k:'Mão (Pan)', cat:'sele', alt:['Pan Tool','Hand'], d:'Arrasta a tela para navegar pelo documento sem alterar o zoom.'},
+      {k:'Transformação Livre', cat:'sele', alt:['Free Transform'], d:'Aplica rotação, escala, inclinação e distorção livre com controles diretos.'},
+
+      // Desenho de Linhas
+      {k:'Mão Livre (Freehand)', cat:'linhas', alt:['Freehand Tool','Lápis'], d:'Desenha linhas à mão livre; pode suavizar automaticamente conforme a configuração.'},
+      {k:'Linha de 2 Pontos (2‑Point Line)', cat:'linhas', alt:['2-Point Line'], d:'Cria linhas retas rápidas definindo ponto inicial e final.'},
+      {k:'Polilinha (Polyline)', cat:'linhas', alt:['Polyline Tool'], d:'Desenha sequências de segmentos retos e curvos em um único fluxo.'},
+      {k:'Bézier', cat:'linhas', alt:['Bezier Tool','Caneta Bézier'], d:'Desenha curvas Bézier com controle preciso de nós e alças.'},
+      {k:'Caneta (Pen)', cat:'linhas', alt:['Pen Tool'], d:'Fluxo de desenho baseado em segmentos e alças, similar a aplicativos de ilustração.'},
+      {k:'B‑Spline', cat:'linhas', alt:['B-Spline Tool'], d:'Gera curvas suaves com poucos pontos de controle.'},
+      {k:'LiveSketch', cat:'linhas', alt:['LiveSketch Tool'], d:'Converte esboços à mão livre em vetores editáveis usando inferência de formas.'},
+      {k:'Artistic Media', cat:'linhas', alt:['Artistic Media Tool','Pincel','Aerógrafo','Caligráfico','Sprayer'], d:'Aplica traços artísticos, pincéis, arames, caligráficos e pulverizadores ao longo de caminhos.'},
+
+      // Formas Geométricas
+      {k:'Retângulo', cat:'formas', alt:['Rectangle Tool'], d:'Cria retângulos/quadrados; cantos podem ser arredondados, chanfrados ou côncavos.'},
+      {k:'Retângulo de 3 Pontos', cat:'formas', alt:['3-Point Rectangle'], d:'Define primeiro a base e depois a altura para retângulos inclinados com precisão.'},
+      {k:'Elipse/Círculo', cat:'formas', alt:['Ellipse Tool','Circle'], d:'Cria elipses e círculos; suporta arcos e setores.'},
+      {k:'Elipse de 3 Pontos', cat:'formas', alt:['3-Point Ellipse'], d:'Desenha elipses a partir de um eixo base definido por 2 pontos.'},
+      {k:'Polígono', cat:'formas', alt:['Polygon Tool'], d:'Cria polígonos de N lados; inclui estrelas simples ao ajustar cantos.'},
+      {k:'Estrela', cat:'formas', alt:['Star Tool'], d:'Gera estrelas de várias pontas com controle de profundidade.'},
+      {k:'Estrela Complexa', cat:'formas', alt:['Complex Star'], d:'Cria estrelas com padrões intrincados e repetição de pontas.'},
+      {k:'Espiral', cat:'formas', alt:['Spiral Tool'], d:'Espirais logarítmicas ou arqueadas com controle de voltas.'},
+      {k:'Grade (Graph Paper)', cat:'formas', alt:['Graph Paper'], d:'Cria grades de linhas/colunas em um único objeto para layouts técnicos.'},
+
+      // Formas Inteligentes (Flyouts de Formas)
+      {k:'Formas Comuns (Basic Shapes)', cat:'intelig', alt:['Common Shapes','Basic Shapes'], d:'Conjunto de formas prontas (corações, setas simples, símbolos etc.).'},
+      {k:'Setas (Arrow Shapes)', cat:'intelig', alt:['Arrow Shapes'], d:'Setas direcionalmente ajustáveis.'},
+      {k:'Fluxograma (Flowchart Shapes)', cat:'intelig', alt:['Flowchart'], d:'Formas padrão de fluxograma (processo, decisão, entrada/saída etc.).'},
+      {k:'Faixas e Insígnias (Banner Shapes)', cat:'intelig', alt:['Banner Shapes'], d:'Fitilhos, faixas e selos ajustáveis.'},
+      {k:'Balões/Chamadas (Callout Shapes)', cat:'intelig', alt:['Callout'], d:'Balões de fala e caixas de chamada com ponteiro ajustável.'},
+
+      // Texto & Tabelas
+      {k:'Texto (Artístico/Parágrafo)', cat:'texto', alt:['Text Tool','Artistic Text','Paragraph Text'], d:'Cria texto artístico (títulos) ou de parágrafo (blocos com caixa). Suporta caminho e colunas.'},
+      {k:'Tabela', cat:'texto', alt:['Table Tool'], d:'Insere e edita tabelas com linhas, colunas e formatação.'},
+
+      // Edição & Corte
+      {k:'Borracha (Eraser)', cat:'edicao', alt:['Eraser Tool'], d:'Apaga trechos de objetos vetoriais, dividindo caminhos conforme o traço.'},
+      {k:'Faca (Knife)', cat:'edicao', alt:['Knife Tool'], d:'Corta objetos em partes separadas por traço livre, linha reta ou Bézier.'},
+      {k:'Segmento Virtual (Virtual Segment Delete)', cat:'edicao', alt:['Virtual Segment Delete'], d:'Apaga apenas os segmentos visíveis entre interseções, sem afetar o restante.'},
+      {k:'Tesoura (Knife/Scissors)', cat:'edicao', alt:['Scissors'], d:'Abre um caminho em pontos específicos para separar segmentos.'},
+      {k:'Borracha Inteligente (Smart Erase)', cat:'edicao', alt:['Smart Erase'], d:'Remove áreas fechadas preenchidas, preservando as bordas (varia por versão).'},
+      {k:'Twirl (Redemoinho)', cat:'edicao', alt:['Twirl Tool'], d:'Deforma vetores com efeito de redemoinho em uma área focal.'},
+      {k:'Smear (Arrastar)', cat:'edicao', alt:['Smear Tool'], d:'“Puxa” nós/curvas como argila vetorial, criando prolongamentos.'},
+      {k:'Repelir (Repel)', cat:'edicao', alt:['Repel Tool'], d:'Empurra nós/segmentos para longe do cursor.'},
+      {k:'Atrair (Attract)', cat:'edicao', alt:['Attract Tool'], d:'Puxa nós/segmentos na direção do cursor.'},
+
+      // Interativas (Efeitos)
+      {k:'Mistura (Blend)', cat:'inter', alt:['Blend Tool','Interactive Blend'], d:'Interpola formas/cores entre objetos, criando passos ou transições fluidas.'},
+      {k:'Contorno (Contour)', cat:'inter', alt:['Contour Tool','Interactive Contour'], d:'Adiciona contornos internos/externos múltiplos ao redor de objetos.'},
+      {k:'Distorção (Distort)', cat:'inter', alt:['Distort Tool','Zipper','Twister','Push/Pull'], d:'Aplica distorções de zíper, torção, empurrar/puxar com controles interativos.'},
+      {k:'Sombra (Drop Shadow)', cat:'inter', alt:['Drop Shadow Tool','Interactive Drop Shadow'], d:'Cria sombras projetadas suaves com controle de direção e suavidade.'},
+      {k:'Envelope', cat:'inter', alt:['Envelope Tool','Interactive Envelope'], d:'Deforma objetos dentro de um envelope com nós, permitindo perspectivas e curvaturas.'},
+      {k:'Extrusão (Extrude)', cat:'inter', alt:['Extrude Tool'], d:'Gera extrusões 3D simuladas com controle de profundidade e luz.'},
+      {k:'Perspectiva', cat:'inter', alt:['Perspective'], d:'Aplica perspectiva interativa a objetos (em algumas versões via ferramenta dedicada).'},
+      {k:'Malha de Dobra (Envelope Mesh)', cat:'inter', alt:['Mesh Envelope'], d:'Variações de envelope usando malhas detalhadas (dependente de versão).'},
+
+      // Preenchimento & Contorno
+      {k:'Preenchimento Interativo', cat:'preen', alt:['Interactive Fill','Gradient'], d:'Aplica e edita preenchimentos uniformes, degradês (linear, radial, cônico) e padrões.'},
+      {k:'Preenchimento (Uniforme/Degradê/Padrão/Texture)', cat:'preen', alt:['Uniform Fill','Fountain Fill','Pattern Fill','Texture Fill'], d:'Janela de diálogo para definir tipos de preenchimento e suas propriedades.'},
+      {k:'Preenchimento Inteligente (Smart Fill)', cat:'preen', alt:['Smart Fill Tool'], d:'Cria novos objetos preenchendo áreas fechadas resultantes da sobreposição de curvas.'},
+      {k:'Contorno (Caneta de Contorno)', cat:'preen', alt:['Outline Pen','Outline Tool'], d:'Define espessura, estilo e extremidades do traço/contorno dos objetos.'},
+
+      // Cor & Amostragem
+      {k:'Conta‑Gotas (Eyedropper)', cat:'cor', alt:['Eyedropper Tool','Amostra'], d:'Captura atributos de cor de objetos/tela para aplicar em outros itens.'},
+      {k:'Balde de Tinta (Paintbucket)', cat:'cor', alt:['Paintbucket','Atribuir propriedades'], d:'Aplica cor/atributos capturados a outros objetos (preenchimento/contorno).'},
+      {k:'Conta‑Gotas de Atributos', cat:'cor', alt:['Attributes Eyedropper'], d:'Copia e aplica múltiplos atributos (cor, contorno, efeitos) entre objetos.'},
+
+      // Transparência & Malha
+      {k:'Transparência', cat:'trans', alt:['Transparency Tool'], d:'Aplica transparências uniformes, lineares, radiais, de padrão e mais, de forma interativa.'},
+      {k:'Preenchimento por Malha (Mesh Fill)', cat:'trans', alt:['Mesh Fill Tool','Malha'], d:'Cria um grid de malha para variações suaves de cor dentro do objeto.'},
+
+      // Medidas & Conectores
+      {k:'Dimensão Paralela', cat:'med', alt:['Parallel Dimension'], d:'Cota linear com linhas de extensão e texto de medida.'},
+      {k:'Dimensão Horizontal/Vertical', cat:'med', alt:['Horizontal/Vertical Dimension'], d:'Cotagem alinhada a eixos principais.'},
+      {k:'Dimensão Angular', cat:'med', alt:['Angular Dimension'], d:'Mede ângulos entre duas linhas/segmentos.'},
+      {k:'Dimensão de Segmento', cat:'med', alt:['Segment Dimension'], d:'Exibe o comprimento de um segmento específico.'},
+      {k:'Chamada de 3 Pontos', cat:'med', alt:['3-Point Callout'], d:'Cria anotações com líder (seta/linha) em três pontos.'},
+      {k:'Conectores (reta/ortogonal/arredondado)', cat:'med', alt:['Connector Tools','Straight','Right‑Angle','Rounded'], d:'Conecta formas com linhas que se ajustam automaticamente em diagramas.'},
+    ];
+
+    // -------- Construção do grid --------
+    const grid = document.getElementById('grid');
+    const frag = document.createDocumentFragment();
+    const groups = {
+      sele: 'Seleção & Visualização',
+      linhas: 'Desenho de Linhas',
+      formas: 'Formas Geométricas',
+      intelig: 'Formas Inteligentes',
+      texto: 'Texto & Tabelas',
+      edicao: 'Edição & Corte',
+      inter: 'Interativas (Efeitos)',
+      preen: 'Preenchimento & Contorno',
+      cor: 'Cor & Amostragem',
+      trans: 'Transparência & Malha',
+      med: 'Medidas & Conectores'
+    };
+
+    const byCat = {};
+    for (const t of tools){ (byCat[t.cat] ||= []).push(t); }
+
+    for (const cat of Object.keys(groups)){
+      const card = document.createElement('section');
+      card.className = 'card';
+      card.dataset.cat = cat;
+
+      const head = document.createElement('div');
+      head.className = 'cat';
+      head.innerHTML = `<span class="dot"></span><h2>${groups[cat]}</h2>`;
+      card.appendChild(head);
+
+      (byCat[cat]||[]).forEach(({k,d,alt=[]})=>{
+        const item = document.createElement('div');
+        item.className = 'item';
+        const searchText = [k,d].concat(alt).join(' ').toLowerCase();
+        item.dataset.search = searchText;
+        item.innerHTML = `
+          <div class="k">
+            <kbd>${k}</kbd>
+            <div class="desc">${d}${alt.length?`<div class="sub">Sinônimos: ${alt.join(', ')}</div>`:''}</div>
+          </div>`;
+        card.appendChild(item);
+      });
+
+      frag.appendChild(card);
+    }
+
+    grid.appendChild(frag);
+
+    // -------- Filtro por texto e tags --------
+    const q = document.getElementById('q');
+    const tags = document.getElementById('tags');
+    let activeCat = 'all';
+
+    function applyFilter(){
+      const term = q.value.trim().toLowerCase();
+      document.querySelectorAll('.card').forEach(card=>{
+        const inCat = (activeCat==='all') || card.dataset.cat===activeCat;
+        let anyVisible = false;
+        card.querySelectorAll('.item').forEach(item=>{
+          const hit = item.dataset.search.includes(term);
+          const show = inCat && (term==='' ? true : hit);
+          item.classList.toggle('hidden', !show);
+          if(show) anyVisible = true;
+        });
+        card.classList.toggle('hidden', !anyVisible);
+      });
+    }
+
+    q.addEventListener('input', applyFilter);
+    tags.addEventListener('click', e=>{
+      const t = e.target.closest('.tag');
+      if(!t) return;
+      document.querySelectorAll('.tag').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      activeCat = t.dataset.cat;
+      applyFilter();
+    });
+
+    // Atalho: / foca na busca
+    window.addEventListener('keydown', (ev)=>{
+      if(ev.key === '/' && document.activeElement !== q){ ev.preventDefault(); q.focus(); }
+    });
+  </script>
+</body>
+</html>

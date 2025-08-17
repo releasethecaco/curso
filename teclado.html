@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guia Completo de Teclas de Teclado</title>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --card: #111826;
+      --muted: #93a4b8;
+      --text: #e8edf3;
+      --accent: #7dd3fc;
+      --chip: #1b2433;
+      --border: #243247;
+      --shadow: 0 10px 25px rgba(0,0,0,.3);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:linear-gradient(180deg,#09111a,#0b0f14 30%);color:var(--text)}
+    header{position:sticky;top:0;background:rgba(11,15,20,.7);backdrop-filter:blur(8px);z-index:10;border-bottom:1px solid var(--border)}
+    .wrap{max-width:1100px;margin:0 auto;padding:20px}
+    h1{margin:6px 0 8px;font-size:clamp(24px,3.5vw,38px);letter-spacing:.2px}
+    p.lead{margin:0 0 14px;color:var(--muted)}
+    .search-bar{display:flex;gap:10px;align-items:center}
+    .search-bar input{width:100%;padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:var(--card);color:var(--text);box-shadow:var(--shadow)}
+    .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .tag{font-size:12px;padding:8px 10px;border-radius:999px;background:var(--chip);border:1px solid var(--border);cursor:pointer;user-select:none}
+    .tag.active{outline:2px solid var(--accent)}
+    main{max-width:1100px;margin:24px auto;padding:0 20px 80px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px 14px 10px;box-shadow:var(--shadow)}
+    .cat{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+    .cat .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+    .card h2{font-size:14px;margin:0;color:#cfe6ff;text-transform:uppercase;letter-spacing:.12em}
+    .item{border-top:1px dashed var(--border);padding:12px 6px 10px}
+    .k{display:inline-grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center}
+    kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px;padding:4px 8px;border-radius:10px;background:linear-gradient(180deg,#0f1724,#0c1320);border:1px solid var(--border);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+    .desc{color:var(--muted);font-size:14px;line-height:1.45}
+    .sub{font-size:12px;color:#a9bacf}
+    .hidden{display:none !important}
+    .footer{max-width:1100px;margin:0 auto;padding:24px 20px 60px;color:var(--muted);border-top:1px solid var(--border)}
+    .pill{display:inline-block;margin-right:8px;margin-top:8px;padding:6px 10px;border-radius:999px;background:var(--chip);border:1px solid var(--border);font-size:12px}
+    a{color:var(--accent);text-decoration:none}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Guia Completo de Teclas de Teclado</h1>
+      <p class="lead">Procure por uma tecla ou filtre por categoria para ver o que ela faz. As funções podem variar por sistema e aplicativo.</p>
+      <div class="search-bar">
+        <input id="q" placeholder="Pesquisar (ex.: F5, Ctrl, Page Down, Áudio)…" aria-label="Pesquisar tecla" />
+      </div>
+      <div class="tags" id="tags">
+        <span class="tag active" data-cat="all">Todas</span>
+        <span class="tag" data-cat="alfanum">Alfanuméricas</span>
+        <span class="tag" data-cat="mod">Modificadoras</span>
+        <span class="tag" data-cat="naveg">Navegação</span>
+        <span class="tag" data-cat="edicao">Edição</span>
+        <span class="tag" data-cat="func">Função (F1–F24)</span>
+        <span class="tag" data-cat="sistema">Sistema</span>
+        <span class="tag" data-cat="num">Teclado Numérico</span>
+        <span class="tag" data-cat="midia">Multimídia</span>
+        <span class="tag" data-cat="especiais">Especiais/Laptop</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <section class="footer">
+    <h3 style="margin:0 0 8px;font-size:18px;color:#d6e7ff">Observações importantes</h3>
+    <p>• O significado exato de algumas teclas muda conforme o <strong>layout</strong> (ABNT2/BR, ANSI/US, ISO/EU), o <strong>sistema operacional</strong> (Windows, macOS, Linux/Unix) e o <strong>aplicativo</strong> em uso.<br>
+       • Em Macs, a tecla <strong>Command (⌘)</strong> cumpre o papel de muitos atalhos do <strong>Ctrl</strong> no Windows. A tecla <strong>Option (⌥)</strong> equivale com frequência ao <strong>Alt</strong>, e a <strong>Control</strong> do Mac é distinta do Ctrl do Windows.<br>
+       • No Brasil (ABNT2), há teclas dedicadas como <strong>Ç</strong> e a <strong>tecla de acento</strong> (´, `, ^, ~) que funcionam como <em>dead keys</em> para compor caracteres (ex.: ~ + a → ã).
+    </p>
+    <div>
+      <span class="pill">Layout: ABNT2, ANSI, ISO</span>
+      <span class="pill">Sistemas: Windows, macOS, Linux</span>
+      <span class="pill">Compatibilidade varia por app</span>
+    </div>
+  </section>
+
+  <script>
+    // ---------- Dados das teclas ----------
+    const keys = [
+      // Alfanuméricas
+      {k:'A–Z', cat:'alfanum', alt:['letras','abc'], d:'Letras maiúsculas/minúsculas para digitação de texto. Com Shift ativa maiúsculas; com Caps Lock, mantém maiúsculas.'},
+      {k:'0–9 (linha superior)', cat:'alfanum', alt:['números','digitos','superior'], d:'Dígitos numéricos; com Shift, insere símbolos (ex.: ! @ # dependendo do layout).'},
+      {k:'Espaço (Space)', cat:'alfanum', alt:['space','barra de espaço'], d:'Insere espaço entre palavras. Em players, pode pausar/retomar.'},
+      {k:'Enter/Return', cat:'alfanum', alt:['enter','return'], d:'Confirma ação ou quebra de linha. Em formulários, envia; em diálogos, confirma padrão.'},
+      {k:'Tab', cat:'alfanum', alt:['tabulação'], d:'Insere tabulação/avanço de foco entre campos. Em editores, indenta código.'},
+      {k:'Acento (´ ` ^ ~) — Dead keys', cat:'alfanum', alt:['acentos','dead key'], d:'Combina com letras para acentuação (ex.: ´ + e → é). Disponibilidade varia por layout.'},
+      {k:'Ç (ABNT2)', cat:'alfanum', alt:['cedilha'], d:'Letra específica do layout brasileiro ABNT2.'},
+
+      // Modificadoras
+      {k:'Shift', cat:'mod', alt:['⇧'], d:'Alterna temporariamente maiúsculas e insere símbolos alternativos. Com outras teclas, forma atalhos (ex.: Shift+Click para seleção contínua).'},
+      {k:'Ctrl (Control)', cat:'mod', alt:['control'], d:'Modificadora de atalhos no Windows/Linux (ex.: Ctrl+C, Ctrl+V). No macOS, tem função distinta de ⌘.'},
+      {k:'Alt', cat:'mod', alt:['option (mac)','⌥'], d:'Modificadora; no macOS, equivalente a Option. Em alguns apps abre menus de atalhos sublinhados (Windows).'},
+      {k:'AltGr (Right Alt)', cat:'mod', alt:['alt gr','right alt'], d:'Acessa o 3º/4º nível de símbolos no layout (ex.: @, €, ¢) — comum em ABNT/Europeu.'},
+      {k:'Command (⌘) / Windows (⊞)', cat:'mod', alt:['cmd','win','super'], d:'Modificadora central (macOS: ⌘) para atalhos; no Windows, abre o menu Iniciar (⊞). Em Linux costuma ser “Super/Meta”.'},
+      {k:'Fn (Function)', cat:'mod', alt:['function'], d:'Presente em laptops: alterna camadas de teclas de função, brilho, volume, multimídia.'},
+      {k:'Caps Lock', cat:'mod', alt:['caps'], d:'Alterna letras maiúsculas. Indicador de estado (luz) em muitos teclados.'},
+      {k:'Num Lock', cat:'mod', alt:['numlock'], d:'Alterna o teclado numérico entre números e navegação (Home/End, PgUp/PgDn).'},
+      {k:'Scroll Lock', cat:'mod', alt:['scrolllock'], d:'Herança histórica: em alguns apps alterna rolagem por setas. Pouco usado.'},
+
+      // Navegação
+      {k:'Setas (↑ ↓ ← →)', cat:'naveg', alt:['arrow keys'], d:'Navegam entre caracteres/linhas/itens; com Shift, expandem seleção.'},
+      {k:'Home', cat:'naveg', d:'Vai ao início da linha; com Ctrl, início do documento/lista.'},
+      {k:'End', cat:'naveg', d:'Vai ao fim da linha; com Ctrl, fim do documento/lista.'},
+      {k:'Page Up', cat:'naveg', alt:['pgup'], d:'Rola uma página para cima; em planilhas, navega entre blocos.'},
+      {k:'Page Down', cat:'naveg', alt:['pgdn'], d:'Rola uma página para baixo; em planilhas, navega entre blocos.'},
+      {k:'Backspace', cat:'naveg', alt:['apagar'], d:'Apaga caractere à esquerda do cursor. Em navegadores antigos, voltava página.'},
+      {k:'Delete (Del)', cat:'naveg', alt:['delete'], d:'Apaga caractere à direita ou itens selecionados. Em sistemas, envia para Lixeira.'},
+      {k:'Insert (Ins)', cat:'naveg', alt:['ins'], d:'Alterna entre modo Inserção e Sobrescrita em alguns editores.'},
+
+      // Edição
+      {k:'Esc (Escape)', cat:'edicao', alt:['escape'], d:'Cancela diálogos, sai de modos cheios de tela/menus ou interrompe operações.'},
+      {k:'Menu/Context (⋮)', cat:'edicao', alt:['application key','context menu'], d:'Abre o menu de contexto (equivalente ao clique direito).'},
+      {k:'Print Screen (PrtScn)', cat:'edicao', alt:['captura de tela'], d:'Captura a tela para área de transferência/arquivo (varia por SO).'},
+      {k:'Pause/Break', cat:'edicao', d:'Função histórica: pausa execução/scroll em terminais. Pouco usado hoje.'},
+
+      // Funções
+      {k:'F1', cat:'func', d:'Ajuda do aplicativo/sistema.'},
+      {k:'F2', cat:'func', d:'Renomear item selecionado (Windows); editar célula (Excel).'},
+      {k:'F3', cat:'func', d:'Abrir pesquisa no app/explorer.'},
+      {k:'F4', cat:'func', d:'Com Alt, fecha janela (Alt+F4 no Windows).'},
+      {k:'F5', cat:'func', d:'Atualizar/recaregar (navegador, explorer).'},
+      {k:'F6', cat:'func', d:'Percorre áreas/focos na janela (navegador: barra de endereços).'},
+      {k:'F7', cat:'func', d:'Verificação ortográfica (em apps MS).'},
+      {k:'F8', cat:'func', d:'Opções de boot em PCs antigos; atalhos específicos em apps.'},
+      {k:'F9', cat:'func', d:'Recalcular/atualizar (em IDEs/planilhas); enviar/receber e‑mails (Outlook).'},
+      {k:'F10', cat:'func', d:'Ativa barra de menus; com Shift, menu de contexto no Explorer.'},
+      {k:'F11', cat:'func', d:'Alterna tela cheia (navegadores).'},
+      {k:'F12', cat:'func', d:'Salvar como/DevTools (navegadores) — depende do app.'},
+      {k:'F13–F24', cat:'func', d:'Teclas estendidas em alguns teclados; geralmente programáveis.'},
+
+      // Sistema
+      {k:'Windows (⊞)/Command (⌘)', cat:'sistema', alt:['win','cmd','super'], d:'Abre menu Iniciar (Windows) ou Spotlight/ações (macOS com ⌘). Combinada em atalhos do sistema.'},
+      {k:'Power', cat:'sistema', d:'Liga/desliga/suspende (laptops). Pode exigir pressionar por alguns segundos.'},
+      {k:'Sleep', cat:'sistema', d:'Coloca o computador em repouso.'},
+      {k:'Wake', cat:'sistema', d:'Acorda o computador do repouso.'},
+      {k:'Bloquear Tela', cat:'sistema', alt:['lock'], d:'Atalho dedicado em alguns teclados para bloquear a sessão.'},
+
+      // Numérico
+      {k:'Numpad 0–9', cat:'num', alt:['numérico','teclado numérico'], d:'Entrada numérica rápida; exige Num Lock ativo.'},
+      {k:'Numpad . (Decimal)', cat:'num', d:'Ponto/virgula decimal conforme regional.'},
+      {k:'Numpad + − × ÷', cat:'num', alt:['add','sub','mul','div'], d:'Operadores matemáticos no teclado numérico.'},
+      {k:'Numpad Enter', cat:'num', d:'Confirma cálculos/dados (separado do Enter principal).'},
+
+      // Multimídia
+      {k:'Volume + / − / Mute', cat:'midia', d:'Aumenta, reduz ou silencia o volume do sistema.'},
+      {k:'Play/Pause', cat:'midia', d:'Reproduz/pausa mídia no player ativo.'},
+      {k:'Próxima/Anterior Faixa', cat:'midia', alt:['next','prev'], d:'Avança ou retrocede a faixa atual.'},
+      {k:'Parar (Stop)', cat:'midia', d:'Interrompe a reprodução de mídia.'},
+      {k:'Brilho + / −', cat:'midia', d:'Ajusta o brilho da tela (laptops/monitores com suporte).'},
+      {k:'Tecla Microfone (Mute/On)', cat:'midia', d:'Ativa/silencia o microfone em nível do sistema (quando disponível).'},
+      {k:'Tecla Screenshot', cat:'midia', d:'Atalho dedicado para captura (em alguns teclados gamer/laptop).'},
+
+      // Especiais / Laptop
+      {k:'Teclas de Função Secundárias (Fn + F1–F12)', cat:'especiais', d:'Controlam brilho, volume, Wi‑Fi, teclado retroiluminado, modo avião etc.'},
+      {k:'TrackPoint/Trackpad Keys', cat:'especiais', d:'Botões físicos integrados para clique esquerdo/direito/rolagem.'},
+      {k:'Desligar Touchpad', cat:'especiais', d:'Alterna o touchpad em laptops.'},
+      {k:'Tecla Airplane Mode', cat:'especiais', d:'Ativa/desativa rapidamente conexões sem fio.'},
+      {k:'Teclas Macro/Programáveis', cat:'especiais', d:'Presentes em teclados gamer/office para ações personalizadas.'},
+    ];
+
+    // ---------- Construção do grid ----------
+    const grid = document.getElementById('grid');
+    const frag = document.createDocumentFragment();
+    const groups = {
+      alfanum: 'Alfanuméricas',
+      mod: 'Modificadoras',
+      naveg: 'Navegação',
+      edicao: 'Edição e Contexto',
+      func: 'Teclas de Função',
+      sistema: 'Sistema',
+      num: 'Teclado Numérico',
+      midia: 'Multimídia',
+      especiais: 'Especiais / Laptop'
+    };
+
+    // Agrupa por categoria
+    const byCat = {};
+    for (const entry of keys){
+      (byCat[entry.cat] ||= []).push(entry);
+    }
+
+    for (const cat of Object.keys(groups)){
+      const card = document.createElement('section');
+      card.className = 'card';
+      card.dataset.cat = cat;
+
+      const head = document.createElement('div');
+      head.className = 'cat';
+      head.innerHTML = `<span class="dot"></span><h2>${groups[cat]}</h2>`;
+      card.appendChild(head);
+
+      (byCat[cat]||[]).forEach(({k,d,alt=[]})=>{
+        const item = document.createElement('div');
+        item.className = 'item';
+        const searchText = [k,d].concat(alt).join(' ').toLowerCase();
+        item.dataset.search = searchText;
+        item.innerHTML = `
+          <div class="k">
+            <kbd>${k}</kbd>
+            <div class="desc">${d}${alt.length?`<div class="sub">Sinônimos: ${alt.join(', ')}</div>`:''}</div>
+          </div>`;
+        card.appendChild(item);
+      });
+
+      frag.appendChild(card);
+    }
+
+    grid.appendChild(frag);
+
+    // ---------- Filtro por texto e tags ----------
+    const q = document.getElementById('q');
+    const tags = document.getElementById('tags');
+    let activeCat = 'all';
+
+    function applyFilter(){
+      const term = q.value.trim().toLowerCase();
+      document.querySelectorAll('.card').forEach(card=>{
+        const inCat = (activeCat==='all') || card.dataset.cat===activeCat;
+        let anyVisible = false;
+        card.querySelectorAll('.item').forEach(item=>{
+          const hit = item.dataset.search.includes(term);
+          const show = inCat && (term==='' ? true : hit);
+          item.classList.toggle('hidden', !show);
+          if(show) anyVisible = true;
+        });
+        card.classList.toggle('hidden', !anyVisible);
+      });
+    }
+
+    q.addEventListener('input', applyFilter);
+
+    tags.addEventListener('click', e=>{
+      const t = e.target.closest('.tag');
+      if(!t) return;
+      document.querySelectorAll('.tag').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      activeCat = t.dataset.cat;
+      applyFilter();
+    });
+
+    // Acesso rápido pelo teclado: / foca busca
+    window.addEventListener('keydown', (ev)=>{
+      if(ev.key === '/' && document.activeElement !== q){
+        ev.preventDefault(); q.focus();
+      }
+    });
+  </script>
+</body>
+</html>
