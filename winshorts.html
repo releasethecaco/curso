@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Atalhos de Teclado do Windows</title>
+<style>
+  :root {
+    --bg: #0b0b0c;
+    --panel: #121214;
+    --panel-2: #16161a;
+    --text: #e6e6e6;
+    --muted: #a1a1aa;
+    --border: #26262b;
+    --accent: #2a66ff;
+    --chip-bg: #1f1f24;
+    --shadow: 0 6px 20px rgba(0,0,0,.35);
+  }
+  :root.light {
+    --bg: #f7f7f8;
+    --panel: #ffffff;
+    --panel-2: #ffffff;
+    --text: #0f1115;
+    --muted: #5a5f6a;
+    --border: #e6e6ea;
+    --accent: #2a66ff;
+    --chip-bg: #f1f2f4;
+    --shadow: 0 6px 20px rgba(0,0,0,.08);
+  }
+  * { box-sizing: border-box }
+  body {
+    margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    background: var(--bg); color: var(--text);
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 16px; }
+  header.sticky { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px); background: color-mix(in oklab, var(--bg), transparent 20%); border-bottom: 1px solid var(--border) }
+  .row { display: grid; grid-template-columns: 1fr; gap: 12px }
+  @media (min-width: 720px) { .row-3 { grid-template-columns: 2fr 1fr 1fr } }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); padding: 12px }
+  .toolbar { display:flex; gap: 8px; align-items:center; }
+  .input, select, button { font: inherit }
+  .input, select { width: 100%; padding: 10px 12px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px; color: var(--text); outline: none }
+  .muted { color: var(--muted) }
+  .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border:1px solid var(--border); border-radius:12px; background: var(--panel-2); color: var(--text); cursor:pointer }
+  .btn:hover { filter: brightness(1.05) }
+  .btn.primary { border-color: color-mix(in oklab, var(--accent), black 30%); background: linear-gradient(180deg, color-mix(in oklab, var(--accent), white 5%), var(--accent)); color: white }
+  .grid { display:grid; grid-template-columns: 1fr; gap: 12px }
+  @media (min-width: 860px) { .grid { grid-template-columns: 1fr 1fr } }
+  .shortcut { display:flex; gap: 12px }
+  .copy { white-space: nowrap }
+  kbd { background: var(--chip-bg); border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 8px; padding: 2px 6px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .95em }
+  .chips { display:flex; gap:6px; flex-wrap: wrap; margin-top: 6px }
+  .chip { font-size: 11px; padding: 3px 8px; background: var(--chip-bg); border: 1px solid var(--border); border-radius: 999px; color: var(--muted) }
+  footer { text-align:center; font-size: 12px; margin: 28px 0; color: var(--muted) }
+  .title { display:flex; align-items:center; gap:10px }
+  .toggle { margin-left: auto }
+</style>
+</head>
+<body>
+<header class="sticky">
+  <div class="wrap" style="display:flex; align-items:center; gap:10px; padding:12px 16px">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 5h18v14H3z" stroke="currentColor" stroke-width="1.5"/><path d="M7 9h10M7 13h10" stroke="currentColor" stroke-width="1.5"/></svg>
+    <h1 style="font-size:clamp(18px,2.4vw,24px); margin:0">Atalhos de Teclado do Windows</h1>
+    <button id="themeBtn" class="btn toggle" aria-label="Alternar tema">🌙 Modo escuro</button>
+  </div>
+</header>
+
+<main class="wrap" style="padding-top:16px">
+  <section class="card" style="margin-bottom:12px">
+    <div class="title" style="margin-bottom:8px"><strong>Como usar</strong></div>
+    <p class="muted" style="margin:0">Pesquise por ação (ex.: "captura", "emoji"), teclas (ex.: "Win + Shift + S") ou filtre por categoria. Clique no atalho para copiar. Baixe a lista filtrada em CSV.</p>
+  </section>
+
+  <section class="row row-3" style="margin-bottom:12px">
+    <div class="card">
+      <div class="toolbar">
+        <input id="q" class="input" placeholder="Pesquisar atalhos… (ex.: janela, recorte, terminal)" />
+      </div>
+    </div>
+    <div class="card">
+      <div class="toolbar">
+        <select id="cat"></select>
+      </div>
+    </div>
+    <div class="card">
+      <div class="toolbar" style="justify-content:space-between">
+        <div class="muted" style="font-size:14px">Exibindo <span id="countStrong" style="font-weight:600">0</span> de <span id="countTotal">0</span> atalhos</div>
+        <button id="csvBtn" class="btn">⬇️ Baixar CSV</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="list" class="grid"></section>
+
+  <footer>Alguns atalhos podem variar por versão do Windows e idioma do sistema. Esta página é independente da Microsoft.</footer>
+</main>
+
+<script>
+(function(){
+  // ====== Tema (salvo em localStorage) ======
+  const THEME_KEY = 'shortcuts.theme';
+  const btn = document.getElementById('themeBtn');
+  function setTheme(mode){
+    const root = document.documentElement.classList;
+    if(mode === 'light'){ root.add('light'); btn.textContent = '☀️ Modo claro'; }
+    else { root.remove('light'); btn.textContent = '🌙 Modo escuro'; }
+    localStorage.setItem(THEME_KEY, mode);
+  }
+  const saved = localStorage.getItem(THEME_KEY) || 'dark';
+  setTheme(saved);
+  btn.addEventListener('click', ()=> setTheme(document.documentElement.classList.contains('light') ? 'dark' : 'light'));
+
+  // ====== Dados ======
+  const SHORTCUTS = [
+    // Sistema & Janelas
+    { keys:"Win", action:"Abrir/Iniciar menu Iniciar", category:"Sistema & Janelas" },
+    { keys:"Win + X", action:"Abrir Menu de Acesso Rápido (Power User)", category:"Sistema & Janelas" },
+    { keys:"Win + D", action:"Mostrar/Ocultar a área de trabalho", category:"Sistema & Janelas" },
+    { keys:"Win + E", action:"Abrir Explorador de Arquivos", category:"Sistema & Janelas" },
+    { keys:"Win + L", action:"Bloquear o PC", category:"Sistema & Janelas" },
+    { keys:"Win + I", action:"Abrir Configurações", category:"Sistema & Janelas" },
+    { keys:"Win + A", action:"Abrir Painel Rápido/Notificações (Ações Rápidas)", category:"Sistema & Janelas", version:"Win 10/11" },
+    { keys:"Win + N", action:"Abrir Central de Notificações", category:"Sistema & Janelas", version:"Win 11" },
+    { keys:"Win + K", action:"Conectar a dispositivos sem fio", category:"Sistema & Janelas" },
+    { keys:"Win + P", action:"Projetar/Alternar telas", category:"Sistema & Janelas" },
+    { keys:"Win + R", action:"Executar (Abrir caixa 'Executar')", category:"Sistema & Janelas" },
+    { keys:"Win + S", action:"Pesquisar no Windows", category:"Sistema & Janelas" },
+    { keys:"Win + U", action:"Abrir Acessibilidade", category:"Sistema & Janelas" },
+    { keys:"Win + V", action:"Abrir Área de Transferência (Clipboard) em nuvem", category:"Sistema & Janelas", version:"Win 10/11 (ativar)" },
+    { keys:"Win + . / Win + ;", action:"Abrir seletor de emoji/kaomoji/símbolos", category:"Sistema & Janelas", version:"Win 10/11" },
+    { keys:"Win + ,", action:"Espiar a área de trabalho (Peek)", category:"Sistema & Janelas" },
+    { keys:"Win + Pause/Break", action:"Exibir Propriedades do Sistema", category:"Sistema & Janelas" },
+    { keys:"Alt + Tab", action:"Alternar entre janelas abertas", category:"Sistema & Janelas" },
+    { keys:"Ctrl + Alt + Tab", action:"Alternador de janelas fica fixo na tela", category:"Sistema & Janelas" },
+    { keys:"Alt + Esc", action:"Percorrer janelas em ordem de abertura", category:"Sistema & Janelas" },
+    { keys:"Alt + F4", action:"Fechar janela/app ativo; na Área de Trabalho abre diálogo Desligar", category:"Sistema & Janelas" },
+    { keys:"Win + M", action:"Minimizar todas as janelas", category:"Sistema & Janelas" },
+    { keys:"Win + Shift + M", action:"Restaurar janelas minimizadas", category:"Sistema & Janelas" },
+    { keys:"Win + Home", action:"Minimiza todas exceto a ativa (Shake)", category:"Sistema & Janelas" },
+    { keys:"Win + ↑", action:"Maximizar janela", category:"Sistema & Janelas" },
+    { keys:"Win + ↓", action:"Restaurar/Minimizar janela", category:"Sistema & Janelas" },
+    { keys:"Win + ←", action:"Ancorar janela à esquerda", category:"Sistema & Janelas" },
+    { keys:"Win + →", action:"Ancorar janela à direita", category:"Sistema & Janelas" },
+    { keys:"Win + Shift + ←/→", action:"Mover janela para outro monitor", category:"Sistema & Janelas" },
+    { keys:"Win + Ctrl + Shift + B", action:"Reiniciar driver de vídeo (corrigir tela preta)", category:"Sistema & Janelas" },
+    { keys:"Ctrl + Shift + Esc", action:"Abrir Gerenciador de Tarefas", category:"Sistema & Janelas" },
+
+    // Área de Trabalho & Áreas Virtuais
+    { keys:"Win + Tab", action:"Visão de Tarefas (Áreas de Trabalho Virtuais)", category:"Área de Trabalho & Áreas Virtuais" },
+    { keys:"Win + Ctrl + D", action:"Criar nova Área de Trabalho", category:"Área de Trabalho & Áreas Virtuais" },
+    { keys:"Win + Ctrl + ←/→", action:"Alternar entre Áreas de Trabalho", category:"Área de Trabalho & Áreas Virtuais" },
+    { keys:"Win + Ctrl + F4", action:"Fechar Área de Trabalho atual", category:"Área de Trabalho & Áreas Virtuais" },
+
+    // Explorador de Arquivos
+    { keys:"Ctrl + N", action:"Nova janela", category:"Explorador de Arquivos", context:"Explorador" },
+    { keys:"Ctrl + W", action:"Fechar janela/guia", category:"Explorador de Arquivos", context:"Explorador" },
+    { keys:"Ctrl + L / Alt + D / F4", action:"Focar barra de endereços", category:"Explorador de Arquivos" },
+    { keys:"Ctrl + F / Ctrl + E", action:"Focar caixa de pesquisa", category:"Explorador de Arquivos" },
+    { keys:"Ctrl + Shift + N", action:"Nova pasta", category:"Explorador de Arquivos" },
+    { keys:"Alt + Enter", action:"Propriedades do item selecionado", category:"Explorador de Arquivos" },
+    { keys:"Ctrl + C / Ctrl + X / Ctrl + V", action:"Copiar / Recortar / Colar", category:"Explorador de Arquivos" },
+    { keys:"Ctrl + Shift + V", action:"Colar sem formatação (em apps que suportam)", category:"Texto & Edição" },
+    { keys:"Ctrl + Z / Ctrl + Y", action:"Desfazer / Refazer", category:"Texto & Edição" },
+    { keys:"Delete / Shift + Delete", action:"Enviar para Lixeira / Excluir permanentemente", category:"Explorador de Arquivos" },
+    { keys:"Ctrl + A", action:"Selecionar tudo", category:"Explorador de Arquivos" },
+    { keys:"F2", action:"Renomear item", category:"Explorador de Arquivos" },
+    { keys:"F3", action:"Pesquisar no Explorador", category:"Explorador de Arquivos" },
+    { keys:"F4", action:"Abrir lista da barra de endereços", category:"Explorador de Arquivos" },
+    { keys:"F5", action:"Atualizar", category:"Explorador de Arquivos" },
+    { keys:"Alt + ↑/←/→", action:"Subir nível / Voltar / Avançar", category:"Explorador de Arquivos" },
+    { keys:"Ctrl + Scroll do mouse", action:"Aumentar/Diminuir ícones (zoom)", category:"Explorador de Arquivos" },
+    { keys:"Shift + Clique direito", action:"Abrir menu de contexto clássico/mais opções", category:"Explorador de Arquivos", version:"Win 11: 'Mostrar mais opções'" },
+
+    // Texto & Edição
+    { keys:"Ctrl + B / I / U", action:"Negrito / Itálico / Sublinhado (em apps de texto)", category:"Texto & Edição" },
+    { keys:"Ctrl + K", action:"Inserir/Editar hiperlink (em apps de texto)", category:"Texto & Edição" },
+    { keys:"Ctrl + S", action:"Salvar", category:"Texto & Edição" },
+    { keys:"Ctrl + Shift + S", action:"Salvar como", category:"Texto & Edição" },
+    { keys:"Ctrl + P", action:"Imprimir", category:"Texto & Edição" },
+    { keys:"Ctrl + F", action:"Localizar", category:"Texto & Edição" },
+    { keys:"Ctrl + H", action:"Substituir (em editores de texto)", category:"Texto & Edição" },
+    { keys:"Ctrl + →/←", action:"Mover cursor por palavra", category:"Texto & Edição" },
+    { keys:"Ctrl + Shift + →/←", action:"Selecionar palavra a palavra", category:"Texto & Edição" },
+    { keys:"Home / End", action:"Ir ao início/fim da linha", category:"Texto & Edição" },
+    { keys:"Ctrl + Home / Ctrl + End", action:"Ir ao início/fim do documento", category:"Texto & Edição" },
+
+    // Captura de Tela
+    { keys:"PrtScn (Print Screen)", action:"Capturar tela inteira para a Área de Transferência", category:"Captura de Tela" },
+    { keys:"Alt + PrtScn", action:"Capturar janela ativa para a Área de Transferência", category:"Captura de Tela" },
+    { keys:"Win + PrtScn", action:"Salvar captura de tela inteira em Imagens/Capuras de Tela", category:"Captura de Tela" },
+    { keys:"Win + Shift + S", action:"Ferramenta de Recorte (Snipping) – selecionar área", category:"Captura de Tela", version:"Win 10/11" },
+
+    // Acessibilidade
+    { keys:"Win + Ctrl + Enter", action:"Narrador (ligar/desligar)", category:"Acessibilidade" },
+    { keys:"Win + + / Win + -", action:"Abrir Lupa e aumentar/diminuir zoom", category:"Acessibilidade" },
+    { keys:"Win + Esc", action:"Fechar Lupa", category:"Acessibilidade" },
+    { keys:"Win + Ctrl + C", action:"Filtro de Cor (alternar) — daltonismo", category:"Acessibilidade", version:"Win 10/11" },
+    { keys:"Shift (5x)", action:"Ativar Teclas de Aderência (Sticky Keys)", category:"Acessibilidade" },
+    { keys:"Alt Esq + Shift Esq + PrtScn", action:"Ativar Alto Contraste", category:"Acessibilidade" },
+
+    // Linha de Comando / Terminal
+    { keys:"Win + X, depois I", action:"Abrir Windows Terminal/PowerShell (Admin) via menu rápido", category:"Linha de Comando" },
+    { keys:"Ctrl + Shift + Enter", action:"Abrir app selecionado como Administrador (no menu Iniciar/Pesquisa)", category:"Linha de Comando" },
+    { keys:"Ctrl + Shift + C / V", action:"Copiar/Colar no Terminal/PowerShell", category:"Linha de Comando", version:"Windows Terminal" },
+    { keys:"Ctrl + ,", action:"Abrir Configurações do Windows Terminal", category:"Linha de Comando", version:"Windows Terminal" },
+    { keys:"Ctrl + Shift + T", action:"Nova aba no Terminal", category:"Linha de Comando", version:"Windows Terminal" },
+    { keys:"Ctrl + Tab / Ctrl + Shift + Tab", action:"Alternar abas no Terminal", category:"Linha de Comando", version:"Windows Terminal" },
+
+    // Navegação Web
+    { keys:"Ctrl + T", action:"Nova guia", category:"Navegação Web" },
+    { keys:"Ctrl + W / Ctrl + F4", action:"Fechar guia", category:"Navegação Web" },
+    { keys:"Ctrl + Shift + T", action:"Reabrir última guia fechada", category:"Navegação Web" },
+    { keys:"Ctrl + L / Alt + D / F6", action:"Focar barra de endereços", category:"Navegação Web" },
+    { keys:"Ctrl + J", action:"Downloads", category:"Navegação Web" },
+    { keys:"Ctrl + H", action:"Histórico", category:"Navegação Web" },
+    { keys:"Ctrl + + / Ctrl + - / Ctrl + 0", action:"Zoom in / Zoom out / 100%", category:"Navegação Web" },
+    { keys:"Ctrl + Tab / Ctrl + Shift + Tab", action:"Alternar guias", category:"Navegação Web" },
+    { keys:"Alt + ←/→", action:"Voltar/Avançar", category:"Navegação Web" },
+    { keys:"Ctrl + F", action:"Localizar na página", category:"Navegação Web" },
+    { keys:"F11", action:"Tela cheia", category:"Navegação Web" },
+
+    // Multimídia
+    { keys:"Win + G", action:"Xbox Game Bar (captura e desempenho)", category:"Multimídia" },
+    { keys:"Win + Alt + R", action:"Iniciar/Parar gravação de tela (Game Bar)", category:"Multimídia" },
+    { keys:"Win + Alt + PrtScn", action:"Capturar screenshot do jogo (Game Bar)", category:"Multimídia" },
+    { keys:"Volume Mute / + / -", action:"Silenciar / Aumentar / Diminuir volume (teclas de mídia)", category:"Multimídia" },
+    { keys:"Media Play/Pause / Next / Previous", action:"Controles de mídia (teclas dedicadas)", category:"Multimídia" },
+
+    // Diversos & Produtividade
+    { keys:"Win + H", action:"Ditado por voz", category:"Diversos & Produtividade", version:"Win 10/11" },
+    { keys:"Win + B", action:"Focar ícones da bandeja do sistema", category:"Diversos & Produtividade" },
+    { keys:"Win + T", action:"Focar itens da barra de tarefas", category:"Diversos & Produtividade" },
+    { keys:"Win + Shift + S", action:"Abrir Ferramenta de Recorte (atalho repetido útil)", category:"Diversos & Produtividade" },
+    { keys:"Win + Space", action:"Alternar idioma/teclado", category:"Diversos & Produtividade" },
+    { keys:"Ctrl + Shift", action:"Alternar layout de teclado (método antigo)", category:"Diversos & Produtividade" },
+    { keys:"Win + Ctrl + Q", action:"Iniciar Assistência Rápida", category:"Diversos & Produtividade", version:"Win 11" },
+    { keys:"Win + Shift + C", action:"Abrir Widgets (Windows 11)", category:"Diversos & Produtividade", version:"Win 11" },
+    { keys:"Win + Alt + D", action:"Mostrar/Ocultar data e relógio na área de trabalho (Win 10)", category:"Diversos & Produtividade", version:"Win 10" }
+  ];
+
+  // ====== Util ======
+  const $ = s => document.querySelector(s);
+  const $$ = s => Array.from(document.querySelectorAll(s));
+  function toCSV(rows){
+    const header = 'keys,action,category,context,version';
+    const lines = rows.map(s => [s.keys, s.action, s.category, s.context||'', s.version||'']
+      .map(v => '"' + String(v).replaceAll('"','""') + '"').join(','));
+    return [header, ...lines].join('\n');
+  }
+  function downloadCSV(text, name='atalhos-windows.csv'){
+    const blob = new Blob([text], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = name; a.click(); URL.revokeObjectURL(url);
+  }
+  function copy(text){ navigator.clipboard?.writeText(text); }
+
+  // ====== Filtro ======
+  const totalEl = $('#countTotal');
+  const countEl = $('#countStrong');
+  const listEl = $('#list');
+  const qEl = $('#q');
+  const catEl = $('#cat');
+
+  const CATEGORIES = Array.from(new Set(SHORTCUTS.map(s => s.category))).sort();
+  catEl.innerHTML = '<option value="">Todas as categorias</option>' + CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
+  totalEl.textContent = SHORTCUTS.length;
+
+  function render(){
+    const term = (qEl.value||'').trim().toLowerCase();
+    const cat = catEl.value || null;
+    const filtered = SHORTCUTS.filter(s => {
+      const hay = [s.keys, s.action, s.category, s.context, s.version].filter(Boolean).join(' ').toLowerCase();
+      const matchQ = !term || hay.includes(term);
+      const matchC = !cat || s.category === cat;
+      return matchQ && matchC;
+    });
+    countEl.textContent = filtered.length;
+
+    listEl.innerHTML = '';
+    const frag = document.createDocumentFragment();
+    filtered.forEach(s => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="shortcut">
+          <div class="copy"><button class="btn" data-copy="${s.keys.replaceAll('"','&quot;')}">📋 Copiar</button></div>
+          <div style="min-width:0">
+            <div style="font-weight:600"><kbd>${s.keys}</kbd></div>
+            <div class="muted" style="margin-top:6px">${s.action}</div>
+            <div class="chips">
+              <span class="chip">${s.category}</span>
+              ${s.context ? `<span class="chip">${s.context}</span>` : ''}
+              ${s.version ? `<span class="chip">${s.version}</span>` : ''}
+            </div>
+          </div>
+        </div>`;
+      frag.appendChild(card);
+    });
+    listEl.appendChild(frag);
+
+    // Binds de copiar
+    $$('#list [data-copy]').forEach(b => b.addEventListener('click', e => {
+      const t = e.currentTarget.getAttribute('data-copy');
+      copy(t); e.currentTarget.textContent = '✅ Copiado';
+      setTimeout(()=> e.currentTarget.textContent = '📋 Copiar', 900);
+    }));
+  }
+
+  qEl.addEventListener('input', render);
+  catEl.addEventListener('change', render);
+  render();
+
+  // CSV
+  document.getElementById('csvBtn').addEventListener('click', () => {
+    const term = (qEl.value||'').trim().toLowerCase();
+    const cat = catEl.value || null;
+    const filtered = SHORTCUTS.filter(s => {
+      const hay = [s.keys, s.action, s.category, s.context, s.version].filter(Boolean).join(' ').toLowerCase();
+      const matchQ = !term || hay.includes(term);
+      const matchC = !cat || s.category === cat;
+      return matchQ && matchC;
+    });
+    downloadCSV(toCSV(filtered));
+  });
+})();
+</script>
+</body>
+</html>
