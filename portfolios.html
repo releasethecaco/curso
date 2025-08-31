@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Portfólio dos Alunos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #f1f1f1;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 { text-align: center; }
+    form {
+      background: #1e1e1e;
+      padding: 15px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      background: #3b82f6;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover { background: #2563eb; }
+    .portfolio {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+    }
+    .card {
+      background: #1e1e1e;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 0 5px rgba(0,0,0,0.4);
+    }
+    .card img {
+      max-width: 100%;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Envio de Trabalhos</h1>
+  
+  <form id="form">
+    <input type="text" id="nome" placeholder="Seu nome" required>
+    <input type="text" id="titulo" placeholder="Título do trabalho" required>
+    <input type="url" id="link" placeholder="Link do Google Drive (imagem pública)" required>
+    <button type="submit">Enviar</button>
+  </form>
+  
+  <div class="portfolio" id="portfolio"></div>
+  
+  <script>
+    const form = document.getElementById('form');
+    const portfolio = document.getElementById('portfolio');
+
+    // Carregar trabalhos salvos
+    const trabalhos = JSON.parse(localStorage.getItem('trabalhos')) || [];
+    renderPortfolio();
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const nome = document.getElementById('nome').value;
+      const titulo = document.getElementById('titulo').value;
+      const link = document.getElementById('link').value;
+
+      const trabalho = { nome, titulo, link };
+      trabalhos.push(trabalho);
+      localStorage.setItem('trabalhos', JSON.stringify(trabalhos));
+
+      form.reset();
+      renderPortfolio();
+    });
+
+    function renderPortfolio() {
+      portfolio.innerHTML = '';
+      trabalhos.forEach(t => {
+        portfolio.innerHTML += `
+          <div class="card">
+            <h3>${t.titulo}</h3>
+            <p><strong>${t.nome}</strong></p>
+            <a href="${t.link}" target="_blank">
+              <img src="${t.link}" alt="Trabalho de ${t.nome}">
+            </a>
+          </div>
+        `;
+      });
+    }
+  </script>
+</body>
+</html>
